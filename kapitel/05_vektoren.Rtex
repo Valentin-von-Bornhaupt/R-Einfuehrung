@@ -1,0 +1,215 @@
+\section{Vektoren}
+Sehr praktisch sind Vektoren (auch Arrays genannt). In einem Vektor lassen sich unter einem Variablennamen mehrere Werte speichern. Wir betrachten folgende Beispiele:
+<<>>=
+zahlenreihe = c(1, 1, 2, 3, 5, 8, 13, 20) # Was macht c() ?
+zahlenreihe 
+zahlenreihe[1]  # Was machen diese eckigen Klammern []? 
+zahlenreihe[2] 
+zahlenreihe[3] 
+zahlenreihe[8] 
+wochentage = c("Mo", "Di", "Mi", "Do", "Fr", "Sa", "So")
+wochentage
+wochentage[2]
+wochentage[7]
+wochentage[8] # Es gibt nur 7 :)
+length(wochentage) # Wie viele Einträge hat der Vektor wochentage?
+wochentage[-1] # Was macht dieser Befehl?
+wochentage # Hat der Befehl "wochentage[-1]" den Vektor verändert?
+wochentage = wochentage[-7] # Und jetzt? 
+wochentage
+logischerVektor = c(TRUE, TRUE, FALSE)
+logischerVektor
+@
+\bigskip
+
+Bis jetzt können wir über Vektoren sagen, dass man in ihnen viele Einträge speichern kann. Auf die Einträge kann man mit eckigen Klammern \cl{[ ]} zugreifen. Die Einträge sind durchnummeriert mit ganzen Zahlen von 1 aus startend -- ähnlich wie bei Hausnummern:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{VektorenHausnummern.drawio.pdf}
+    \caption{\textbf{Merke:} Einträge von Vektoren sind durchnummeriert mit ganzen Zahlen von 1 aus startend, ähnlich wie bei Hausnummern in einer Straße. D.h. \cl{hausbewohner[1]} gibt es in diesem Beispiel, aber \cl{hausbewohner[0]} oder \cl{hausbewohner[0.5]} kann es nie geben.}
+    \label{fig:vektorenHausnummern}
+\end{figure}
+
+\bigskip
+
+Vektoren mit der \cl{c(...)} Methode zu erstellen, kann sehr umständlich sein, wenn ein sehr langer Vektor erstellt werden soll:
+<<>>=
+# Wollen Vektor erstellen, der die Zahlen von -12 bis 3 enthält:
+testVektor = c(-12, -11, -10, -9, -8, -7, -6 #, usw.
+# Vektoren so zu erstellen wäre stupide. 
+# Merke: Stupide Arbeiten lassen sich in der Regel automatisieren :)
+)
+testVektor = -12 : 3
+testVektor
+@
+Die \cl{:} Methode kann man flott hinschreiben, aber sie erfüllt nicht jeden Sonderwunsch, da man die Schrittweite nicht einstellen kann. \cl{seq()} kann das:
+<<>>=
+testVektor = seq(-0.5, 0.5, 0.2) 
+testVektor
+testVektor[2]
+testVektor = seq(-12, 3)
+testVektor
+testVektor = seq(2, 17, 3)
+testVektor
+@
+
+<<>>=
+testVektor = rep(2, 5)
+testVektor
+testVektor = rep(0, 4)
+testVektor
+@
+Die Funktionen lassen sich auch kombinieren:
+<<>>=
+testVektor = rep(1 : 6 , c(2, 4, 3, 5, 1, 2))
+testVektor
+testVektor = c(1 : 3 , rep(4 ,5))
+testVektor
+@
+
+
+\subsection{Rechnen mit Vektoren}
+\label{sec:Rechnen_mit_Vektoren}
+Ein Key-Feature von Vektoren in R ist, dass man so einfach und intuitiv mit ihnen Rechnen kann:
+<<>>=
+testVektor = c(1.4, 9.2, 7.9, 8.1)
+testVektor
+testVektor + 1 # Was passiert hier?
+2 * testVektor # Was passiert hier?
+testVektor ^ 2 # Was passiert hier?
+# Haben die vorherigen Zeilen den Vektor verändert?
+testVektor 
+zweiterVektor = seq(1, 7, 2)
+zweiterVektor
+testVektor + zweiterVektor # Was passiert hier?
+testVektor - zweiterVektor # Was passiert hier?
+testVektor / zweiterVektor # Was passiert hier?
+@
+
+
+\begin{aufgabe}
+Legen Sie einen Vektor \cl{vektorA} an, der die Zahlen von -5 bis 5 in 0,5er Schritten enthält. Legen Sie dann einen Vektor \cl{vektorB} an, dessen Einträge genau die Quadrate der Einträge von \cl{vektorA} sind. Subtrahieren Sie dann die beiden Vektoren elementweise von einander.
+\end{aufgabe}
+
+\begin{aufgabe}
+Legen Sie einen Vektor an, der die Zahlen von 1 bis 10 enthält und in dem jede Zahl $n$ genau $n$ mal vorkommt. D.h. 1, 2, 2, 3, 3, 3, 4, \dots. Verwende nicht den \cl{c()} Befehl. 
+\end{aufgabe}
+
+
+\subsubsection{Summen und Produkte}
+Es gibt noch zwei praktische Funktionen in R: \cl{sum()} für Summen und \cl{prod()} für Produkte. Wollen wir zum Beispiel die Summe
+
+\begin{align*}
+	\sum_{i=1}^{100} i^2
+\end{align*}
+
+Berechnen, dann können wir das mit der \cl{sum()} Funktion sehr einfach machen:
+
+<<>>=
+zahlenVektor = 1:100
+zahlenVektor
+quadratzahlenVektor = zahlenVektor ^ 2
+quadratzahlenVektor
+sum(quadratzahlenVektor)
+# Oder in einer Zeile:
+sum((1:100)^2)
+@
+
+\begin{aufgabe}
+    Berechne $10 \,! \; = \prod_{i=1}^{10} i = 1 \cdot 2 \cdot ... \cdot 10$. Verwende dabei die R-Funktion \cl{prod()}.
+\end{aufgabe}
+
+\subsection{Vektoren mit Funktionswerten füllen}
+Wie im vorherigen Kapitel (\ref{sec:Rechnen_mit_Vektoren}) gesehen, kann man mit Vektoren in R sehr einfach rechnen. Das geht noch weiter: Man kann auch Funktionen, wie \cl{sin()}, \cl{cos()}, \cl{log()}, \cl{exp()}, \cl{sqrt()} (Quadratwurzel) auf Vektoren verwenden:
+<<>>=
+xVektor = seq(0, 1, 0.5)
+yVektor = sin(xVektor)
+yVektor
+# Zweites Beispiel
+andererYVektor = exp(xVektor^2) / 2
+# Überlege kurz auf einem Blatt Papier, was hier berechnet wird…
+andererYVektor 
+@
+\cl{yVektor} und \cl{andererYVektor} sind keine Funktionen. Sie speichern nur die einmalig errechneten Funktionswerte in ihren Einträgen. Wollen wir zum Beispiel \cl{$\sin(0.5)$} erfahren (und das ist ja in \cl{yVektor} gespeichert), dann müssen wir uns kurz Gedanken machen, wo wir den Wert in \cl{yVektor} finden können. Siehe Dir hierzu vielleicht noch einmal Abbildung \ref{fig:vektorenHausnummern} (S. \pageref{fig:vektorenHausnummern}) an.
+<<>>=
+# wollen sin(0.5) wissen und xVektor hatte ja 0.5 als zweiten Wert:
+yVektor(0.5) # Nope -> runde Klammern für Funktionen, yVektor ist Vektor
+yVektor[0.5] # Nope -> siehe verlinkte Abbildung 
+xVektor[2] # Richtiger x-Wert
+yVektor[2] # Hier ist sin(0.5) gespeichert. Nur weshalb?
+@
+Wir sehen also, dass wir die uns merken müssen, welche $x$-Werte und und welche $y$-Werte zueinander gehören:\\
+
+\begin{center}
+    \begin{tabular}{c!{\vrule width 1.5pt}c|c}
+        Stelle im Vektor & gespeicherter Wert in \cl{xVektor} & gespeicherter Wert in \cl{yVektor}\\
+        \noalign{\hrule height 1.5pt}
+        1 & 0 & $\sin(0) = 0$\\
+        \hline
+        \colorbox{yellow}{2} & \colorbox{yellow}{0.5} & \colorbox{yellow}{$\sin(0.5) \approx 0.48 $}\\
+        \hline
+        3 & 1 & $\sin(1.0) \approx 0.84$\\
+    \end{tabular}
+\end{center}
+
+\subsection{Vektoren sukzessiv füllen}
+\label{sec:VectorenSukzessivFuellen}
+Manchmal kann es für uns praktisch sein, einen Vektor erst nach und nach mit Werten zu füllen. Betrachten wir hierfür einmal folgendes Beispiel:
+Die Fibonacci-Folge ist definiert durch:
+\[
+ f_n :=
+ \begin{cases}
+    1,                  &\text{falls $n = 1$} \\
+    1,                  &\text{falls $n = 2$} \\
+    f_{n-1} + f_{n-2},  &\text{falls $n \geq 3$} \\
+\end{cases} 
+\]
+
+Eine Möglichkeit Einträge dieser (rekursiv definierten) Folge zu errechnen und gleichzeitig abzuspeichern ist, jedes Folgenglied in genau einem Vektoreintrag zu speichern. D.h. wir erstellen einen Vektor FibonacciVektor so, dass \cl{FibonacciVektor[$n$]} genau die $n$-te Fibonacci-Zahl $f_n$ abspeichert:
+
+% löschen alten Fibonacci-Vektor:
+<<include = FALSE>>=
+rm(FibonacciVektor)
+@
+<<>>=
+FibonacciVektor[1] = 1 # Wo ist das Problem?
+FibonacciVektor = c() # Sagen R, dass FibonacciVektor ein Vektor ist
+FibonacciVektor[1] = 1 # n = 1
+FibonacciVektor[2] = 1 # n = 2
+FibonacciVektor
+FibonacciVektor[3] = FibonacciVektor[2] + FibonacciVektor[1] # n = 3
+FibonacciVektor[4] = FibonacciVektor[3] + FibonacciVektor[2] # n = 4
+FibonacciVektor[5] = FibonacciVektor[4] + FibonacciVektor[3] # n = 5
+FibonacciVektor
+@
+Wollten wir jetzt die ersten 20 Fibonacci Zahlen mit Hilfe dieser Methode abspeichern, wäre das wieder eine ganz schön \textit{stupide Arbeit} -- und \textit{stupide Arbeiten} möchten wir automatisieren. Diese Methode könnten wir zum Beispiel mithilfe von \cl{for}-Schleifen automatisieren. Dazu in Kapitel \ref{sec:for-schleifen} mehr.  
+
+
+\subsection{Optionales Wissen: Datentypen in Vektoren}
+Ein Vektor kann viele Einträge abspeichern. Alle Einträge müssen aber denselben Datentyp haben. R wählt von alleine den passenden Datentyp:
+<<>>=
+ersterGemischterVektor = c(TRUE, FALSE)
+ersterGemischterVektor
+ersterGemischterVektor[3] = 1.3
+# Achtung: Sind TRUE / FALSE noch als TRUE / FALSE gespeichert?
+ersterGemischterVektor 
+zweiterGemischterVektor = c("Mathe", 1.0, "<3") 
+# Achtung: Ist die 1.0 noch als richtige Zahl gespeichert? 
+zweiterGemischterVektor
+@
+
+Zusammenfassend können wir sagen, dass R immer automatisch den geeignetsten Gesamtdatentypen für ein Vektor wählt, den sich alle Einträge in einem Vektor teilen.
+Die für uns wichtige Reihenfolge ist: 
+\begin{align*}
+    \cl{logical} \to \cl{double} \to \cl{character}
+\end{align*}
+Mit jedem Schritt nach rechts werden wir Allgemeiner (zB jede \cl{double} Zahl kann auch als Zeichenkette \cl{character} aufgefasst werden), aber wir verlieren eventuell gewisse Eigenschaften: So kann man zum Beispiel mit \cl{logical}-Vektoren andere Vektoren derselben Länge filtrieren (siehe Kapitel \ref{sec:BedAufVektoren}) und mit ihnen rechnen, mit \cl{double}-Vektoren kann nur noch rechnen und mit \cl{character}-Vektoren kann man nicht einmal mehr rechnen (Siehe Aufgabe \ref{auf:TypenInVektoren}). Sind nun mehrere Datentypen in einem Vektor vertreten (zB \cl{double} und \cl{logical}), dann wählt R immer den geeignetsten gemeinsamen Datentyp als Datentypen des Vektors aus (in der oben genannten Reihenfolge also den, der möglichst weit links ist, aber von allen Variablen noch gemeinsam verwendet wird). Zum Beispiel bei \cl{double} und \cl{logical} wäre es \cl{double}, weil \cl{double} und \cl{character} die möglichen, gemeinsam genutzten Datentypen wären und \cl{double} der in der Anordnung linkere wäre. 
+
+\begin{aufgabe} \textbf{(Optional)}
+\label{auf:TypenInVektoren}
+    Was passiert, wenn Du \cl{ersterGemischterVektor[3] + 1} bzw. \\\cl{zweiterGemischterVektor[2] + 1} berechnest? Wie kannst Du Dir das erklären? Was haben Datentypen damit zu tun?
+\end{aufgabe}
+
+
+\newpage

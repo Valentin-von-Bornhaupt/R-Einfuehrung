@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{scrextend}
+\usepackage{amsthm}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{paralist}
+\usepackage{etoolbox}
+\usepackage{calc}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{tabularx}
+\setlength\parindent{0pt}
+\usepackage{float}
+\usepackage[svgnames]{xcolor} % Für Color-Boxen hinter Text
+\usepackage{adjustbox}
+
+% --- Geometrie und Kopf-/Fusszeilen ---
+\geometry{a4paper, top=20mm, left=25mm, right=25mm, bottom=20mm, headsep=10mm, footskip=12mm}
+\usepackage[colorlinks = true,
+			urlcolor = blue,
+			linkcolor = black
+			]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{14.49998pt}
+\fancyfoot[C]{\thepage}
+
+% --- Pfad zu den Grafiken ---
+\usepackage{graphicx}
+\graphicspath{{grafiken/}}
+
+% --- Eigene Befehle und Umgebungen ---
+\newcommand{\cl}[1]{\colorbox{WhiteSmoke}{#1}}  
+\newcommand{\think}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\todo}[1]{\textbf{\textcolor{green}{ToDo: #1}}}
+\renewcommand*{\arraystretch}{1.2} % Für hübschere Tabellen
+\theoremstyle{definition}
+\newtheorem{aufgabe}{Aufgabe}
+\newtheorem{bemerkung}{Bemerkung}
+\newtheorem{nicetoknow}{Nice to know}
+
+
+% --- Dokumentinformationen ---
+\title{Eine kurze Einführung in die Programmierung mit R}
+\author{Valentin von Bornhaupt und Dr. Michael Welter}
+\date{Version vom \today}
+
+
+\begin{document}
+
+\maketitle 
+\date{}
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+% <<setup, include=FALSE>>=
+% # --- 1. Schriftgröße in den Code-Blöcken anpassen ---
+% knitr::opts_chunk$set(size = "small")
+% @
+
+
+
+% --- Kapitel einfügen mit knit_child() ---
+<<child-chapters, include=FALSE>>=
+chapterFiles = c(
+  'kapitel/01_start.Rtex',
+  'kapitel/02_kommentare.Rtex',
+  'kapitel/03_taschenrechner.Rtex',
+  'kapitel/04_variablen.Rtex',
+  'kapitel/05_vektoren.Rtex',
+  'kapitel/06_grafiken.Rtex',
+  'kapitel/07_if_verzweigungen.Rtex',
+  'kapitel/08_for_schleifen.Rtex',
+  'kapitel/09_funktionen.Rtex',
+  'kapitel/10_matrizen.Rtex',
+  'kapitel/11_dataframes.Rtex'
+)
+@
+
+<<include-chapters, echo=FALSE, results='asis'>>=
+out = NULL
+for (f in chapterFiles) {
+  # knit_child() verarbeitet jede .Rtex-Datei und gibt den reinen LaTeX-Code zurück
+  out = c(out, knit_child(f, quiet = TRUE))
+}
+cat(out, sep = '\n')
+@
+
+\end{document}

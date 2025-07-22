@@ -1,0 +1,52 @@
+\section{R als Taschenrechner} \label{R als Taschenrechner}
+Man kann R als Taschenrechner verwenden, indem man die Rechnungen einfach hinschreibt und ausführt. Ein paar für uns interessante Operatoren sind: 
+
+\textbf{ + , - , * , / , sqrt() , exp() , log() , x $\hat{\phantom{}}$ y , sin() , cos()}
+\\
+
+Wichtig:
+\begin{itemize}
+    \item Klammersetzung ist wichtig.
+    \item Die Kreiszahl $\pi$ ist in R als \textbf{pi} abgespeichert. 
+    \item Um Kommazahlen einzugeben, muss man ``.'' statt ``,'' schreiben (d.h. 2.5 statt 2,5).
+    \item Die Winkelfunktionen sind im Bogenmaß definiert (d.h. $2\pi$ entspricht einem Kreis statt $360^{\circ}$).
+\end{itemize}
+
+Hier ein paar Rechenbeispiele:
+<<>>=
+3 / 4
+3 + 4 * 2  # Beachtet R "Punkt vor Strich"?
+(3 + 4) * 2
+3 ^ 2
+48 / 6 / 2 # Warum wären Klammern hier wahrscheinlich besser gewesen?
+48 / (6 / 2)
+(48 / 6) / 2
+sin(2)
+exp(1)
+e ^ 2
+0.5 * exp(2 - sqrt(5))
+@
+
+An der Fehlermeldung können wir sehen, dass R die Eulersche Zahl $e$ nicht
+als \texttt{e} kennt. Wir müssen stattdessen \cl{exp()}
+verwenden. Die Zahl $\pi$ kennt R aber:
+
+<<>>=
+pi
+Pi # man achte auf Groß- und Kleinschreibung: R kennt nur "pi"
+@
+An dem letzten Beispiel sehen wir, dass R bei den Namen von
+Funktionen und Variablen auf Groß- und Kleinschreibung
+achtet. \cl{pi} und \cl{Pi} sind für R zwei
+unterschiedliche Variablennamen.
+
+\begin{aufgabe}
+    Berechnen Sie mit R den Wert des Ausdrucks $\frac{1+\sqrt{5}}{2}$.
+\end{aufgabe}
+
+% \begin{aufgabe}
+%     Wie sieht der mathematische Ausdruck zu der folgenden Zeile R-Code aus?
+%     << results = "hide" >>=
+%     - exp( cos( (2 - sqrt(16) ) / 5) / 2)
+%     @
+% \end{aufgabe}

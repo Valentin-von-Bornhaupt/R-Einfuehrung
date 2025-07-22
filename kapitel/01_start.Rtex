@@ -1,0 +1,50 @@
+\section{Start}
+Wir wollen im Kurs RStudio zum Programmieren von R-Code benutzen. Sie können sich die Software von
+der Webseite \href{https://posit.co}{https://posit.co} als kostenlose \textit{Open Source Desktop Edition} herunterladen. Sie
+finden dort Versionen für Windows, macOS und Linux. Außerdem kann man RStudio auch im Webbrowser auf mit der Website \href{https://posit.cloud}{https://posit.cloud} nutzen. 
+
+\bigskip
+
+\textbf{Neu im WS 2024/25:} Wir wollen in diesem Semester erstmalig auch eine JupyterHub-Instanz der Uni Bonn nutzen. Ähnlich wie posit.cloud ermöglicht es diese, dass man R ohne Installation im Webbrowser nutzen kann. darüber hinaus werden wir sogenannte Notebooks nutzen. Diese ermöglichen es R-Code, die Ausgabe des Codes und begleitenden Text ansprechend in einer Datei zu speichern. 
+
+\bigskip
+
+R ist eine sehr mächtige und vielseitige Programmiersprache, die sich
+darüber hinaus durch sogenannte Pakete enorm erweitern lässt. Wir werden in
+diesem Kurs nur wenige Aspekte ansprechen.
+
+\subsection{Wie lerne ich das Programmieren in R?}
+Programmieren lernst Du wahrscheinlich nicht allein durch die Lektüre von Büchern o.ä., sondern primär, indem Du mit Programmcode arbeitest. Deshalb solltest Du im ersten Schritt zwar alle Codeschnipsel in dieser PDF lesen und versuchen zu verstehen. Im zweiten Schritt solltest Du aber auch mit dem Code ``spielen'': D.h. die hier vorgestellten Befehle selbst ausführen, oder vor dem Ausführen leicht variieren und gucken, was sich am Ergebnis dadurch verändert. Die Arbeitsblätter sollten Dir dann beim Vertiefen helfen und Dir mögliche Anwendungsmöglichkeiten für Dein neues Wissen präsentieren. 
+
+
+\subsection{Die Oberfläche von RStudio}
+RStudio ist nach dem Start grob in drei Bereiche gegliedert. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rStudio_Start.png}
+    \caption{RStudio nach dem Start}
+    \label{fig:RStudio_nach_start}
+\end{figure}
+Es empfiehlt sich für die Übungsaufgaben einen gemeinsamen Ordner anzulegen. In diesem Ordner sollten Sie dann für jedes Übungsblatt eine eigene R-Datei anlegen. R-Dateien, sogenannte R-Skripte, können über \texttt{File -> New File -> R Script} angelegt werden. Dann sieht die Oberfläche wie folgt aus:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rStudio_voll.png}
+    \caption{RStudio nach dem Erstellen eines R-Skriptes}
+    \label{fig:RStudio_voll}
+\end{figure}
+
+
+Die Bereiche haben folgende Funktionen:
+\begin{itemize}
+    \item \textbf{Bereich 1:}\\
+    Die Console: In die Console können Befehle eingetippt werden und sie werden ausgeführt, sobald man Enter drückt.
+
+    \item \textbf{Bereich 2:}\\
+    Plots + Hilfe: In dem Plot-Reiter werden Grafiken angezeigt. Der Hilfe-Reiter liefert eine Such-Funktion für Funktionen in R.
+
+    \item \textbf{Bereich 3:}\\
+    Environment: Hier werden die aktuell von R gespeicherten Variablen angezeigt.
+
+    \item \textbf{Bereich 4:}\\
+    Skripte: Hier wird das aktuell geöffnete Skript angezeigt. Möchte man es ausführen, dann kann man den auszuführenden Code markieren und oben im Bereich 4 auf \texttt{Run} klicken. Dann wird der Code in die Console kopiert und ausgeführt. Alternativ kann auch auf \texttt{Source} bzw. über den Pfeil daneben \texttt{Source with echo} geklickt werden.
+\end{itemize}

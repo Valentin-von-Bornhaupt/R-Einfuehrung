@@ -1,0 +1,129 @@
+\section{DataFrames}
+\subsection{DataFrame aus Vektoren erstellen}
+\label{sec:DataFrame aus Vektoren}
+DataFrames sind sehr nah mit Matrizen verwandt. So kann man sich sowohl Matrizen als auch DataFrames als Tabellen vorstellen. Aber während bei Matrizen der Fokus auf dem Rechnen liegt, liegt der Fokus bei DataFrames beim Verarbeiten großer Datensätze mit unterschiedlichen Datentypen. Betrachten wir erst einmal ein Beispiel:
+
+<<>>=
+# Vektoren mit Beispieldaten:
+art = c("Maus", "Ratte", "Katze", "Hund", "Mensch", "Pferd")
+saeuger = c(T, T, T, T, T, T)
+puls = c(700, 400, 150, 120, 70, 40)
+masse = c(0.02, 0.20, 5.00, 10.00, 70.00, 450.00)
+# Hier erstellen wir einen DataFrame:
+tierTabelle = data.frame(art, saeuger, puls, masse)
+tierTabelle
+@
+Wir stellen fest, dass R den DataFrame Spaltenweise befüllt hat und R die Vektorennamen automatisch als Spaltennamen übernommen hat. 
+
+\subsection{Zugriff auf DataFrames}
+Wir können auf Spalten von DataFrames über den \$-Operator zugreifen. Einzelne Spalten sind dann wieder ein Vektor:
+<<>>=
+tierTabelle$puls # Benutzung: DataFrameName$Spaltenname
+tierTabelle$masse
+@
+Weil die Spalten jetzt wieder Vektoren sind, können wir auf ihnen auch Bedingungen (Kapitel \ref{sec:BedAufVektoren}) anwenden:
+<<>>=
+pulsDaten = tierTabelle$puls
+masseDaten = tierTabelle$masse
+# Wollen alle Pulswerte von Tieren, die mindestens ein Kilogramm wiegen:
+pulsDaten[ masseDaten > 1.0 ] # Siehe Kapitel Bedingungen auf Vektoren
+# Oder alternativ in nur einer Zeile Code:
+tierTabelle$puls[ tierTabelle$masse > 1.0 ]
+@
+
+Am Rande bemerkt: Wir können auf DataFrames auch mit eckigen Klammern (so wie bei Matrizen) zugreifen - allerdings ist der \$-Opterator besser lesbar:
+<<>>=
+tierTabelle[2, 3] # Puls der Ratte
+tierTabelle[ , 3] # komplette dritte Spalte, siehe Matrizen-Kapitel
+tierTabelle[1,  ]
+@
+\subsubsection{Dimension eines Dataframes}
+Analog zur Dimension von Matrizen (siehe \ref{sec:Dimension von Matrizen}) funktioniert die \cl{dim}-Funktion auf DataFrames:
+<<>>=
+dim(tierTabelle) # d.h. 6 Zeilen und 4 Spalten
+prod(dim(tierTabelle)) # Anzahl Elemente im DataFrame
+@
+
+\subsection{DataFrames formatieren}
+\label{sec:DataFrames formatieren}
+Häufig muss man nach dem Erstellen des DataFrames manuell Einstellungen an der Formatierung vornehmen. In unserem Beispiel mit der \cl{tierTabelle} wollen wir die Artbezeichnungen als Zeilennamen festlegen und die Spaltennamen groß schreiben:
+<<>>=
+tierTabelle # So sieht die Tabelle aktuell aus
+
+# Erst wollen wir die Zeilen umbenennen:  
+rownames(tierTabelle) # gibt die aktuellen Zeilennamen aus
+# Jede Zeile ist eindeutig durch die Artenbezeichnung bestimmt.
+# Deshalb nutzen wir die Spalte "art" für die Zeilennamen:
+zeilenNamen = tierTabelle$art # Speichern Spalte "art" ab.
+zeilenNamen
+# Überschreiben das DataFrame mit neuem DataFrame (ohne Spalte "art"):
+tierTabelle = data.frame(saeuger, puls, masse)
+# Speichern jetzt die neuen Zeilennamen:
+rownames(tierTabelle) = zeilenNamen 
+tierTabelle # Tabelle mit neuen Zeilennamen
+
+# Jetzt benennen wir die Spaltennamen um:
+colnames(tierTabelle) # colnames gibt die Spaltennamen aus
+colnames(tierTabelle) = c("Saeuger", "Puls", "Masse")
+# ...jetzt sind die Spaltennamen groß geschrieben:
+tierTabelle 
+tierTabelle$Puls # Jetzt Puls statt puls
+@
+Jetzt, da wir die Zeilen umbenannt haben, können wir auch per Namenszugriff (ähnlich zum \$ von oben) auf die Zeilen zugreifen:
+<<>>=
+tierTabelle["Hund", ] # Statt tierTabelle[4, ]
+@
+
+
+\subsection{DataFrames als Datei speichern und einlesen}
+Unseren DataFrame \cl{tierTabelle} können wir jetzt als Datei bei uns auf dem Rechner Speichern. Du kannst den Ordner, in dem RStudio die Datei speichern oder öffnen soll, über die Menüleiste unter \texttt{Session $\to$ Set Working Directory $\to$ Choose Directory} selbst festlegen. Das Standarddateiformat für Tabellen ist \href{https://de.wikipedia.org/wiki/CSV_(Dateiformat)}{.csv}. Theoretisch kann man DataFrames aber auch zum Beispiel in \cl{.txt}-Dateien abspeichern. 
+<<>>=
+# Speichern unsere Tabelle in der Datei pulsMasse.csv:
+write.table(tierTabelle, "pulsMasse.csv")
+@
+
+Wir können das DataFrame nun auch wieder in R einlesen:
+<<>>=
+eingeleseneTierTabelle = read.table("pulsMasse.csv")
+eingeleseneTierTabelle
+@
+
+\subsubsection{Eigene Separatoren in Dateien festlegen}
+Häufig sind die Einträge in \cl{.csv}-Dateien durch Kommata (,) oder Semikola (;) getrennt. Mit \cl{sep} können wir die Separatoren selbst festlegen:
+<<>>=
+write.table(tierTabelle, "pulsMasseSepariert.csv", sep = ";")
+@
+Die Tabelle sieht dann so aus:
+<<eval = FALSE>>=
+# Inhalt von der Datei pulsMasseSepariert.csv.
+# Die Werte sind per ; getrennt:
+"Saeuger";"Puls";"Masse"
+"Maus";TRUE;700;0.02
+"Ratte";TRUE;400;0.2
+"Katze";TRUE;150;5
+"Hund";TRUE;120;10
+"Mensch";TRUE;70;70
+"Pferd";TRUE;40;450
+@
+Um die Datei nun einzulesen, müssen wir auch beim \cl{read.table}-Befehl den richtigen Separator angeben:
+<<>>=
+eingeleseneTierTabelle = read.table("pulsMasseSepariert.csv", sep = ";")
+eingeleseneTierTabelle
+@
+
+\subsubsection{Tabellenköpfe richtig einlesen}
+Im Kapitel \ref{sec:DataFrames formatieren} haben wir gelernt, wie man eigene Spaltenbeschriftungen (\cl{colnames}) für einen DataFrame festlegen kann. Wenn wir den Datensatz anschließend als \cl{.csv}-Datei abspeichern, besteht die erste Zeile dieser \cl{.csv}-Datei dann aus den Spaltenbezeichnungen (Siehe vorherige Seiten). Es kann jetzt beim erneuten Einlesen passieren, dass R nicht automatisch erkennt, dass die erste Zeile der Datei die Spaltennamen decodiert. Dann gibt es zu Problemen kommen (hier künstlich hervorgerufen durch \cl{header = F}):
+<<>>=
+tierTabelle = read.table("pulsMasse.csv", header = F)
+@
+Man kann den Parameter \cl{header} auf \cl{TRUE} setzen, wodurch R weiß, dass die erste Zeile der Datei die Spaltennamen decodiert. In unserem (künstlichen) Beispiel bekommen wir dann auch keine Fehlermeldung mehr:
+<<>>=
+tierTabelle = read.table("pulsMasse.csv", header = T)
+tierTabelle
+@
+
+\newpage
+\begin{aufgabe}\textbf{(Optional -- kleine Klausurvorbereitung)}\\
+In diesem PDF haben wir viele R-Funktionen kennengelernt. 
+Erstelle Dir auf einem Blatt Papier eine Tabelle, auf der Du für alle genannten R-Funktionen jeweils folgende Dinge notierst: Name der Funktion, was macht die Funktion sowie ein Anwendungsbeispiel. 
+\end{aufgabe}

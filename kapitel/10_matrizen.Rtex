@@ -1,0 +1,136 @@
+\section{Matrizen}
+Ähnlich wie in der Mathematik, gibt es auch in R nicht nur Vektoren, sondern auch Matrizen. Wir wollen uns im Folgenden einmal Matrizen ansehen. 
+<<>>=
+# So macht man aus einem Vektor eine Matrix
+werteFuerMatrix = 1:12 # beliebiger Vektor
+meineMatrix = matrix(werteFuerMatrix, byrow = T, nrow = 3) 
+meineMatrix 
+@
+Achte einmal darauf, welche Parameter wir der \cl{matrix}-Funktion übergegeben haben: Wir haben spezifiziert, welche Werte in der Matrix gespeichert werden sollen (über den Vektor \cl{werteFuerMatrix}). Dann haben wir festgelegt, wie die Werte in der Matrix abgelegt werden sollen: Zeilenweise \cl{byrow = T} und in drei Zeilen aufgeteilt \cl{nrow = 3}. Dadurch werden die 12 Werte aus dem \cl{werteFuerMatrix} Vektor so in die Matrix eingetragen, wie wir es möchten. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fuellenVonMatrizen.drawio.pdf}
+    \caption{Wenn wir mit den Einträgen eines Vektors eine Matrix befüllen, dann können wir das spaltenweise (ohne \cl{byrow}-Parameter bzw. \cl{byrow = F}) oder zeilenweise (\cl{byrow = T}) erledigen.}
+    \label{fig:fuellenVonMatrizen}
+\end{figure}
+
+Die Matrix hätte dementsprechend anders ausgesehen, wenn wir andere Parameter festgelegt hätten:
+<<>>=
+# Auch Zeilenweise befüllt, aber mit nur 2 Zeilen:
+matrix(werteFuerMatrix, byrow = T, nrow = 2)
+
+# Jetzt Spaltenweise befüllt und mit 2 Spalten:
+matrix(werteFuerMatrix, byrow = F, ncol = 2)
+@
+Wichtig ist höchstens, dass die Erstellung der Matrix sinnvoll möglich sein sollte. Nicht sinnvoll wäre zum Beispiel, wenn wir unseren 12-elementigen Vektor \cl{werteFuerMatrix} versuchten in eine 5-zeilige Matrix zu übertragen.\footnote{Es gibt dazu keine sinnvolle Matrix, denn eine Matrix mit 5 Zeilen und 2 Spalten wäre zu klein (da $5 \times 2 = 10 \neq 12$) und eine Matrix mit 5 Zeilen und 3 Spalten wäre zu groß (da $5 \times 3 = 15 \neq 12$). Die Lösung wäre $12 = 5 \times 2,4$, aber 2,4 Spalten ergeben keinen Sinn.} R gibt dann eine Warnung aus:
+<<>>=
+matrix(werteFuerMatrix, byrow = T, nrow = 5)
+@
+\begin{aufgabe}
+    Lege eine Matrix an, die in der ersten Zeile die Zahlen von 1 bis 10 enthält, in der zweiten Zeile die Quadrate dieser Zahlen, in der dritten Spalte die dritten Potenzen u.s.w. bis schließlich in der zehnten Zeile die zehnten Potenzen der Zahlen von 1 bis 10 stehen. \\
+    \textbf{Tipp:} Lege erst einen Vektor an, in dem alle Werte enthalten sind und mache dann aus dem Vektor eine Matrix.
+\end{aufgabe}
+\begin{aufgabe}\textbf{(Optional)}
+Erstelle einen 9-elementigen Vektor, sodass wenn Du aus ihm eine $(3 \times 3)$-Matrix machst, es egal ist, ob Du sie zeilenweise oder spaltenweise befüllst. Schaffst Du es, dass der Vektor mind. vier verschiedene Werte hat? % mit 4 gibt's auch nicht-Diagonaleinträge…
+    
+\end{aufgabe}
+
+\subsection{Zugriff auf Einträge aus Matrizen}
+Anders als Vektoren, deren Einträge durchnummeriert sind \cl{vektor[1]}, \cl{vektor[2]}, \dots greifen wir auf Matrizen zu, indem wir festlegen, welchen Eintrag aus welcher Zeile und Spalte wir haben möchten:
+<<eval = FALSE>>=
+meineMatrix[zeile, spalte]
+@
+Hier ein Beispiel zum Auslesen von bestimmten Einträgen:
+<<>>=
+meineMatrix # diese Matrix wurde zu Beginn des Kapitels definiert
+meineMatrix[2, 3] # Eintrag aus: 2. Zeile, 3. Spalte
+meineMatrix[3, 2] # Eintrag aus: 3. Zeile, 2. Spalte
+@
+Man kann Einträge aus Matrizen mit diesem Zugriff auch verändern:
+<<>>=
+meineMatrix # diese Matrix wurde zu Beginn des Kapitels definiert
+meineMatrix[2, 2] = 42 # Eintrag aus: 2. Zeile, 2. Spalte
+meineMatrix[1, 4] = -1 # Eintrag aus: 1. Zeile, 4. Spalte
+meineMatrix # jetzt mit geänderten Werten
+@
+Außerdem kann man auch auf ganze Zeilen oder Spalten zugreifen, indem man den anderen Eintrag jeweils frei lässt (R wählt dann alle). 
+<<>>=
+meineMatrix[2 , ] # 2. Zeile, alle Einträge
+meineMatrix[ , 3] # 3. Spalte, alle Einträge
+@
+Einzelne Zeilen und Spalten von Vektoren sind wieder Vektoren, mit denen wir weiterrechnen könnten. 
+
+\subsection{Rechnen mit Matrizen}
+Mit matrizen können wir auf unterschiedliche Art und Weise rechnen:
+Zum Beispiel können wir (wie beim Rechnen mit Vektoren \ref{sec:Rechnen_mit_Vektoren}) Operationen auf der Matrix elementweise durchführen:
+<<>>=
+meineMatrix
+2 * meineMatrix
+meineMatrix - 5
+@
+Wir können aber auch Matrizen mit Vektoren multiplizieren. Zum Beispiel:
+\begin{align*}
+    \cl{\text{meineMatrix}}    
+    \cdot 
+    \begin{pmatrix}
+        1\\
+        0\\
+        2\\
+        1
+    \end{pmatrix} \;
+    = \;
+    \begin{pmatrix}
+        1 & 2 & 3 & -1\\
+        5 & 42 & 7 & 8\\
+        9 & 10 & 11 & 12\\
+    \end{pmatrix} \cdot 
+    \begin{pmatrix}
+        1\\
+        0\\
+        2\\
+        1
+    \end{pmatrix} \; = \; \text{?}
+\end{align*}
+Dafür benutzen wir das Matrixprodukt\footnote{Siehe \href{https://de.wikipedia.org/wiki/Matrizenmultiplikation}{Matrizenmultiplikation auf Wikipedia}} \cl{\%*\%}:
+<<>>=
+# Matrixmultiplikation von Matrix mit Vektor:
+meineMatrix %*% c(1, 0, 2, 1) 
+@
+Ensprechend können wir auch zwei Matrizen miteinander multiplizieren:
+\begin{align*}
+    \cl{\text{meineMatrix}}    
+    \cdot 
+    \cl{\text{meineMatrix}}^T \;
+    = \;
+    \begin{pmatrix}
+        1 & 2 & 3 & -1\\
+        5 & 42 & 7 & 8\\
+        9 & 10 & 11 & 12\\
+    \end{pmatrix} \cdot 
+    \begin{pmatrix}
+        1 & 5 & 9\\
+        2 & 42 & 10\\
+        3 & 7 & 11\\
+        -1 & 8 & 12
+    \end{pmatrix} \; = \; \text{?}
+\end{align*}
+In R nutzen wir auch hierfür wieder das Matrizenprodukt \cl{\%*\%}. Außerdem nutzen wir die Funktion \cl{t}, um unsere Matrix zu transponieren:
+<<>>=
+# Matrixmultiplikation von Matrix mit ihrer transponierten Matrix:
+meineMatrix %*% t(meineMatrix) 
+@
+
+\subsection{Dimension einer Matrix}
+\label{sec:Dimension von Matrizen}
+Wollen wir wissen, wie viele Zeilen und Spalten eine Matrix hat, dann können wir
+die \cl{dim}-Funktion verwenden. Die \cl{dim}-Funktion gibt einen Vektor mit zwei Einträgen
+zurück. Der Erste ist die Anzahl der Zeilen, der Zweite die Anzahl der Spalten. Die Anzahl
+aller Elemente ergibt sich dann aus dem Produkt der Anzahl der Zeilen und Spalten:
+<<>>=
+dim(meineMatrix) # d.h. 3 Zeilen, 4 Spalten
+prod(dim(meineMatrix)) # Anzahl der Elemente in meineMatrix
+
+@
+% Dimension, length, apply functionen 
+
+\newpage

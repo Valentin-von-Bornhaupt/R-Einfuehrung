@@ -1,0 +1,87 @@
+\section{Grafiken erzeugen}
+In unserem Kurs beschränken wir uns auf einen kleinen Teil der unzähligen Möglichkeiten, die R zum Zeichnen von Grafiken bietet. Ein großer Vorteil von R ist einfache und schnelle Erzeugen von Grafiken. Ein kleines Beispiel ist:
+
+<<fig.width = 4, fig.height = 4.4, fig.align='center'>>=
+xWerte = c(-2, -1, 0, 1, 2)
+yWerte = exp(xWerte)^2 
+# plot() erzeugt ein Grafikfenster und zeichnet dort die (x,y)-Paare ein
+plot(xWerte, yWerte)
+@
+
+Dieser erzeugte Plot ist zwar nicht schön, aber entstand auch durch gerade einmal eine Zeile Code (\cl{plot(...)}). Außerdem zeigt die Grafik sehr eindrücklich, wie R den \cl{plot()} Befehl verarbeitet:
+Die beiden Vektoren \cl{xWerte}, \cl{yWerte} werden elementweise zu (x,y)-Paaren gepaart und dann in ein Grafikfenster eingezeichnet. Diese elementweise Paarung kann man sich vorstellen, wie bei einer Wertetabelle:
+
+\begin{center}
+    \begin{tabular}{c !{\vrule width 1.5pt} c | l  l}
+        Gezeichneter Punkt in Plot & xWerte & \multicolumn{2}{c}{yWerte}\\
+        \noalign{\hrule height 1.5pt}
+        1. Punkt: & -2 & $\exp(-2)^2 $&$\approx 0.02$  \\
+        \hline
+        2. Punkt: & -1 & $\exp(-1)^2 $&$\approx 0.14$ \\
+        \hline
+        3. Punkt: & 0 & $\exp(0)^2 $&$= 1.00 $ \\
+        \hline
+        4. Punkt: & 1 & $\exp(1)^2 $&$ \approx 7.39 $ \\
+        \hline
+        5. Punkt: & 2 & $\exp(2)^2 $&$ \approx 54.60$ \\ 
+    \end{tabular}
+\end{center}
+
+Jede Zeile steht hier für einen Punkt, den R in ein Grafikfenster einzeichnet. Für allgemeine Vektoren würde es dann so aussehen:
+\begin{center}
+    \begin{tabular}{c !{\vrule width 1.5pt} l | l}
+        Gezeichneter Punkt in Plot & xWerte & yWerte \\
+        \noalign{\hrule height 1.5pt}
+        1. Punkt: & xWerte [1] & yWerte [1] \\
+        \hline
+        2. Punkt: & xWerte [2] & yWerte [2] \\
+        \hline
+        3. Punkt: & xWerte [3] & yWerte [3] \\
+        \hline
+        \vdots & \vdots & \vdots \\
+        \hline
+        Letzter Punkt: & xWerte [ende\footnotemark] & yWerte [ende] \\ 
+    \end{tabular}
+\end{center}
+\footnotetext{Den letzten Eintrag könnte man über \cl{ende = length(xWerte)} bekommen. Da beide Vektoren gleich lang sind, haben sie dasselbe Ende.}
+\bigskip
+
+Schöner werden Grafiken übrigens, wenn man noch weitere Parameter innerhalb des Plot-Befehls festlegt:
+<<fig.width = 4, fig.height = 4.4, fig.align='center'>>=
+xWerte = c(-2, -1, 0, 1, 2) # Zu Eckig? Wähle xWerte = seq(-2, 2, 0.1)
+yWerte = exp(xWerte)^2
+# Schöner: Plot mit weiteren Parametern:
+plot(xWerte, yWerte, type = "l", col = "red") 
+@
+
+Hier eine kurze Aufzählung von ein paar interessanten Plot-Parametern. 
+\begin{itemize}
+    \item type: \cl{l} für Linien, \cl{p} für Punkte)
+    \item col: Farben, wie \cl{green}, \cl{blue}, \cl{red} \href{http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf}{(hier eine Übersicht)}
+    \item xlim, ylim: Achsenbegrenzung, z.B. \cl{c(-1 , 2)} für die äußeren Grenzen -1 und 2. Diese Befehle sind wichtig, wenn man mehrere Grafiken in ein Fenster zeichnen möchte.
+    \item xlab, ylab: Achsenbeschriftung
+\end{itemize}
+\bigskip
+
+Will man jetzt noch zusätzlich weitere Linien bzw. Punkte in dieselbe Grafik einzeichnen, kann man das mit sogenannten \textit{Low-Level-Befehlen} machen. Beispiele hierfür sind \cl{lines} für Linien, \cl{points} für Punkte und \cl{title} für eine Grafiküberschrift. Im Gegensatz zu \textit{High-Level-Befehlen}, wie \cl{plot}, \cl{boxplot}, \cl{hist}, \cl{curve} und \cl{barplot} erstellen Low-Level-Befehle kein neues Grafikfenster, sondern überarbeiten nur das bereits vorhandene.
+Hier ein Beispiel:
+
+<<fig.width = 4, fig.height = 4.4, fig.align='center'>>=
+xVektor = seq(0, 7, 0.1) # Der x-Werte-Bereich
+sinusVektor = sin(xVektor) # 1. Kurve
+cosinusVektor = cos(xVektor) # 2. Kurve
+plot(xVektor, sinusVektor, type = "l", col = "red", xlim = c(0, 7),
+     ylim = c(-1, 1), xlab = "x - Achse", ylab = "y - Achse")
+lines(xVektor, cosinusVektor, col = "blue") # 2.Kurve wird dazugezeichnet
+title("Sinus und Cosinus")
+@
+
+\begin{aufgabe} \textbf{(Optional -- kleine Klausurvorbereitung)}
+    Überlege Dir folgende Aufgaben erst einmal mit Papier und Stift:
+    \begin{enumerate}[(i)]
+        \item Lass' R eine Linie zwischen den Punkten $(0,1)$ und $(1,1)$ zeichnen. (Tipp: Denke hierbei an die erste Seite dieses Kapitels)
+        \item Denk' Dir eine mathematische Funktion aus (z.B. $f(x) = \frac{1}{4}x^2+\frac{1}{10}$ ) und zeichne sie für alle $x$-Werte zwischen -2 und 2 in dasselbe Grafikfenster ein. Achte darauf, dass die Funktion vollständig (d.h. für alle $x \in [-2,2]$) im Grafikfenster angezeigt werden kann.
+        \item Zeichne nun zusätzlich die Punkte $(0,0)$ und $(1,0)$ in einer beliebigen Farbe ($\neq$ schwarz) in dieselbe Grafik ein.
+        \item Schreibe Dir ein Rezept, wie Du Aufgaben diesen Typs in Zukunft lösen würdest.
+    \end{enumerate} 
+\end{aufgabe}

@@ -1,0 +1,69 @@
+
+\section{Selbstgeschriebene Funktionen}
+Möchte man die Nullstellen mehrerer quadratischer Gleichungen mit unterschiedlichen Werten für $p$ oder $q$ finden, so kann man natürlich den Code aus Kapitel \ref{sec:if-verzweigungen} mehrfach duplizieren und die Werte für $p$ oder $q$ jeweils anpassen. Eleganter ist es, eine R-Funktion zu schreiben, die den Rechenteil des $pq$-Formel Skripts enthält und die man dann mit den verschiedenen Werten von $p$ oder $q$ aufrufen kann. Dies könnte wie folgt aussehen:
+
+<<>>=
+pqFormel = function(p, q){
+    # In der PQ-Formel ist eine Wurzel enthalten. Wenn die Zahl in der
+    # Wurzel (p / 2)^2 - q positiv ist, gibt es zwei Lösungen
+    if((p / 2)^2 - q > 0){ 
+       ersteNullst = -p / 2 - sqrt((p / 2)^2 - q)
+       zweiteNullst = -p / 2 + sqrt((p / 2)^2 - q)
+       print(c(ersteNullst, zweiteNullst))
+    } else if ((p / 2)^2 - q == 0){ # sqrt(0) = 0 => nur eine Lösung
+        ersteNullst = -p / 2
+        print(ersteNullst)
+    } else { # Wurzeln von negativen Zahlen können wir nicht ausrechnen
+        print("Es gibt keine Nullstellen")
+    }
+}
+@
+Wenn man die Funktion einmal ausgeführt hat, kann man sie beliebig häufig verwenden:
+
+<<>>=
+pqFormel(8, 7)
+pqFormel(4, 4)
+pqFormel(2, 2)
+@
+
+Im Allgemeinen ist die Schreibweise von Funktionen folgende:
+<<eval = FALSE>>=
+eigenerFunktionenName = function(parameter){
+    Befehle
+}
+@
+
+\subsection{Der return-Befehl}
+In dem pq-Formel-Beispiel werden zwar die Nullstellen berechnet, aber das Ergebnis wird nur angezeigt. Wollen wir mit Ergebnissen einer Funktion weiterrechnen, brauchen wir den \cl{return()}- Befehl. Der \cl{return()}- Befehl beendet den Funktionsaufruf und liefert den Wert in der Klammer des \cl{return()}- Befehls zurück. Beispiel:
+
+<<>>=
+# Einfache Funktion, die x^ 2 + 1 berechnet
+einfacheFunktion = function(zahl) {
+    ergebnis = zahl^2 + 1
+    return(ergebnis)
+}
+
+# Durch den return-Befehl können wir mit den zurückggegebenen 
+# Funktionsergebnissen einfach weiterrechnen:
+unserErgebnis = einfacheFunktion(4) + 2 * einfacheFunktion(3) # 17 +2*10
+print(unserErgebnis)
+@
+Hier wird auch klar, warum der Befehl ``return'' heißt: Nachdem innerhalb der Funktion der Wert \cl{ergebnis} berechnet wurde, wurde das \cl{ergebnis} an den funktionsaufrufenden Code zurückgegeben, damit dieser dann \cl{unserErgebnis} berechnen konnte.
+
+
+
+\subsection{Vektoren + Funktionen = <3}
+Wie im Kapitel \ref{sec:Rechnen_mit_Vektoren} gezeigt, kann man mit Vektoren in R sehr angenehm rechnen. Man kann diese Vektorrechnungen auch mit selbstgeschriebenen Funktionen durchführen. Wir müssen nur beachten, dass man beim Kombinieren von if-Verzweigungen mit Vektoren aufpassen muss (siehe Kapitel \ref{sec:ifvektoren}).
+
+<<fig.width = 6, fig.height = 6.4, fig.align='center'>>=
+# Funktionsdefinition:
+meineFunktion = function (zahl){
+    return( sin(zahl^2) * exp(zahl) )
+}
+
+xVektor = seq(4, 8, 0.01)
+plot(xVektor, meineFunktion(xVektor), type = "l", 
+     col = "red", main = "f(x) = sin(x)^2 * e^x für x in [4, 8]")
+@
+
+\newpage

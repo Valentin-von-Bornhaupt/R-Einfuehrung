@@ -1,0 +1,176 @@
+\section{Variablen}
+\label{sec:variablen}
+In Abschnitt \ref{R als Taschenrechner} haben wir gesehen, dass R mathematische Ausdrücke ausrechnen kann. Aber um richtigen R-Code schreiben zu können, müssen wir Zwischenergebnisse aber auch in \textit{Variablen} abspeichern können: 
+
+
+\subsection{Variablen erstellen}
+Hierzu ein kleines Beispiel: Angenommen wir haben einen Winkel in Grad gegeben und wollen den Sinus von diesem Winkel berechnen:
+
+<<>>=
+# Folgende Zeilen Code rechnen einen Winkel, der in Grad gegeben ist, 
+# in Bogenmaß um, um den Sinus dieses Winkels zu berechnen. Grund für 
+# die Umrechnung ist, dass Winkelfunktionen in R mit Bogenmaß arbeiten: 
+winkelInGrad = 270
+winkelInRad = (winkelInGrad/360) * 2 * pi # Physik: rad = (grad/360)*2pi
+winkelInRad # Winkel in Rad
+sin(winkelInRad) # Sinus von dem Winkel
+@
+
+Wenn wir jetzt den Sinus für einen anderen Winkel berechnen wollen, könnten wir einfach die 270 durch den neuen Winkel ersetzen und den Code erneut ausführen:
+<<>>=
+# Selber Code wie oben: Nur mit anderem winkelInGrad
+winkelInGrad = 60
+winkelInRad = (winkelInGrad/360) * 2 * pi # Physik: rad = (grad/360)*2pi
+winkelInRad # Winkel in Rad
+sin(winkelInRad) # Sinus von dem Winkel
+@
+
+Was ziehen wir aus diesem Beispiel?
+\begin{itemize}
+    \item \textbf{Variablen erzeugen:} Man erzeugt Variablen in R, indem man sie einfach hinschreibt und ihnen mit einem Gleichheitszeichen einen Wert zuweist. Die Variable, der ein Wert zugewiesen werden soll, steht immer auf der linken Seite vom \cl{=} Operator. Die Formel \cl{winkelInGrad = 270} liest sich dann wie: ``Eine Variable mit dem Namen \textit{winkelInGrad} wird erstellt\footnote{falls es schon eine Variable mit dem Namen \textit{winkelInGrad} gibt, wird sie überschrieben. Dazu in Kapitel \ref{sec:variablen_ueberschreiben} mehr} und auf den Wert 270 gesetzt''.
+    
+    \item \textbf{Variablenwert anzeigen lassen:} Um den Wert einer Variablen ausgeben zu lassen, reicht es, die Variable einfach nur in eine einzelne Zeile zu schreiben (hier die Zeile, in der nur winkelInRad steht). In größeren Skripten schreibt man \cl{print( variablenname)} (also zB. print(winkelInRad)), um auch dort Ausgaben zu erzwingen.  
+    
+    \item \textbf{Variablennamen:} Es empfiehlt sich Variablennamen so zu wählen, dass man beim späteren Studieren des eigenen Codes anhand der Variablennamen erkennt, welchen Zwecke sie erfüllen.
+\end{itemize}
+
+Hier ein weiteres Beispiel, in dem wir eigentlich eine Variable \texttt{BeispielWert} erstellen wollen, die den Wert $\sin(z) + 1$ bekommen soll, wobei wir z auf $\pi$ setzen wollen. Dabei ist etwas dummes passiert:
+
+<<>>=
+beispielWert = sin(z) + 1
+z = pi + 1
+@
+
+Wir bekommen eine Fehlermeldung, die verkündet, dass R die Variable \texttt{z} nicht kennt. Das liegt daran, dass R den Programmcode Zeile für Zeile durcharbeitet und direkt interpretiert. Kennt R eine für eine Berechnung notwendige Variable nicht, weil sie eben nicht ``weiter oben'' definiert wurde, weiß R auch nicht, was es machen soll und gibt eine Fehlermeldung aus.
+
+Es gibt noch eine weitere Sache, die wir uns ansehen wollen:
+<<>>=
+42 = lieblingsZahl # Wo ist das Problem?
+@
+Wie im Sichpunkt weiter oben \textit{Variablen erzeugen} geschrieben, weist der \cl{=} Operator der linken Seite den Wert zu, den es auf der rechten Seite vom \cl{=} Zeichen findet. Aber \cl{42} ist eine Zahl. Ihr kann man keinen neuen Wert zuweisen, wie man es bei einer Variable machen kann. 
+
+\begin{aufgabe}\textbf{(Optional)}
+    Beide Fehlermeldungen kann man verhindern. Wie? Schreiben Sie die beiden Code-Schnipsel so um, dass es keine Fehlermeldungen mehr gibt und die Werte richtig gesetzt werden!
+\end{aufgabe}
+
+\subsection{Variablen überschreiben}
+\label{sec:variablen_ueberschreiben}
+Variablenbelegungen sind nicht in Stein gemeißelt: Sie können sich innerhalb des Programms jederzeit ändern, wenn man es wünscht:
+<<>>=
+alterMarie = 20     # Marie ist 20 Jahre alt
+alterMarie
+alterMarie - 1      # Hat das den Wert von alterMarie geändert?
+alterMarie 
+alterLukas = 19     # Lukas ist 19 Jahre alt
+(alterMarie + alterLukas) / 2       # Durchschnitt
+# Geburtstage waren: Beide werden jetzt ein Jahr älter:
+alterMarie = alterMarie + 1
+alterLukas = alterLukas + 1
+alterMarie
+alterLukas
+@
+
+Jetzt könnte man sagen, dass Ausdrücke der Form $x = x + 1$ wiedersprüchlich sind (wenn man auf beiden Seiten $x$ abziehen würde, bliebe $0 = 1$ übrig: Das wäre mathematisch immer falsch). Um zu verstehen, was bei so einer Überschreibung passiert, gucken wir uns einmal folgendes Beispiel an: 
+<<>>=
+zahl = 5
+zahl = zahl + 2 
+zahl
+@
+% Das \cl{=} - Zeichen in R kann nicht nur neue Variablen erstellen (hier \cl{zahl}), sondern Variablen auch einen neuen Wert zuordnen. Der \cl{=} - Operator ist in R (wie auch sonst in fast allen Programmiersprachen) links-zuweisend, d.h. der Variable, die links neben dem \cl{=} - Operator steht, wird der Wert der rechten Seite zugewiesen. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{R_=_Operator.drawio.pdf}
+    \caption{Intern speichert R alle Variablen an einem gemeinsamen Ort, wobei sich R nicht nur den Namen einer Variable und ihren Wert merkt, sondern auch ihren Datentyp. Die gespeicherten Informationen über die Variablen sind immer nur eine Momentaufnahme und ändern sich, wenn sich Variablen verändern. Operatoren, wie \cl{+, -, *, /} sind Datentypabhängig. D.h. die Addition zweier double Zahlen wird vom Computer anders berechnet als die Addition einer Zahl mit einem Vektor oder die Addition zweier Vektoren. Der \cl{=} Operator in R ist ein Zuweisungsoperator, der der Variable, die links von ihm steht, den Wert zuweist, das auf der rechten Seite des \cl{=} Operators steht. Außerdem kann der \cl{=} Operator neue Variablen erstellen.}
+    \label{fig:R_Variable_Ueberschreiben}
+\end{figure}
+
+% Bonus-Klausuraufgabe: Warum versteht R exp() + 5 nicht?
+\begin{aufgabe}\textbf{(Optional -- kleine Klausurvorbereitung)}
+    Was machen folgende Befehle? Löse diese Aufgabe nur mit Papier und Stift (d.h. ohne Computer):
+    \begin{enumerate}
+        \item \cl{zahl = 2}\\ % 2 + n
+        \cl{zahl = zahl + 1}
+        \item \cl{zahl = 2}\\ % 2 * 2^n
+        \cl{zahl = zahl + zahl}
+        \item \cl{zahl = 2}\\ % 2 * 3^n
+        \cl{zahl = zahl * 3}
+        \item Was passiert in den vorherigen Teilaufgaben, wenn man die 1. Zeile jeweils einfach und die 2. Zeile jeweils mehrfach ausführt? Was wird dann berechnet? Löse auch diese Aufgabe erst einmal auf einem Blatt Papier mit Stift.
+    \end{enumerate}
+\end{aufgabe}
+
+
+\subsubsection{Vielleicht später mal wichtig: Unterschiedliche Zuweisungsoperatoren in R}
+Wir haben den \cl{=} Zuweisungsoperator kennengelernt. Aber es gibt in R auch noch weitere Zuweisungsoperatoren, die wir in diesem Kurs aber nicht nutzen werden. Allerdings kann es passieren, dass Ihr später einmal auf Projekte stoßt, in denen folgende Zuweisungsoperationen auftreten:
+<<>>=
+zahl <- 42      # links-zuweisender Pfeil-Operator
+zahl
+15 -> andereZahl        # rechts-zuweisender Pfeil-Operator
+andereZahl
+@
+Der \cl{<-} Operator ist also sehr ähnlich zum \cl{=} Operator, weil beide links-zuweisend sind. Der \cl{->} Operator ist entsprechend rechts-zuweisend. Man sollte \cl{=}, \cl{<-} und \cl{->} aber nicht zusammen verwenden, weil sie sich nicht 100\% gleich verhalten und es zu bösen Überraschungen führen könnte:
+<<>>=
+zahl = andereZahl = 5   # OK
+zahl <- andereZahl <- 5   # OK
+zahl = andereZahl <- 5   # OK
+zahl <- andereZahl = 5   # Error
+@
+Die Erklärung ist, dass die Operatoren \cl{<-} und \cl{=} unterschiedlich starke \href{https://de.wikipedia.org/wiki/Operatorrangfolge}{Operatorenprioritäten} haben. Das Phänomen ist also ähnlich wie bei ``Punkt vor Strich''. Hier wäre es: ``\cl{<-} vor \cl{=}''. D.h. hier möchte \cl{<-} \cl{zahl} den Wert \cl{andereZahl = 5} zuweisen, was syntaktisch nicht geht (da Zuweisungen keinen \cl{return}-Wert liefern). 
+
+
+\subsection{Datentypen von Variablen}
+R ist eine Programmiersprache, die Datentypen selbstständig verwaltet. Es gibt nicht nur den Datentyp \cl{double}\footnote{\cl{double} ist ein Datentyp für (Gleit-)Kommazahlen. Der Name \cl{double} ist technischer Natur und soll uns nicht weiter interessieren.} für Zahlen. Variablen können auch Wahrheitswerte (\cl{TRUE} / \cl{FALSE} bzw. abgekürzt \cl{T} / \cl{F}) oder Zeichenketten (alles was zwischen einfachen \cl{' '} oder doppelten \cl{'' ''} Anführungszeichen steht) enthalten.
+<<>>=
+zahl = 42
+zahl
+typeof(zahl)
+buchstabe = "a"
+buchstabe
+typeof(buchstabe)
+tollerSatz = "The cake is a lie."
+typeof(tollerSatz)
+typeof(2 + 2)
+test = F
+typeof(test)
+typeof(4 == 2*2) # Wird im Kapitel "if-Verzweigungen" genauer erklärt
+@
+
+\subsection{Variablen löschen}
+% Der darauffolgende Code-Chunk ist ohne folgende Zeilen auslaufend
+<<include = FALSE>>=
+rm(z)
+rm(andereZahl)
+rm(winkelInGrad)
+rm(winkelInRad)
+@
+
+Manchmal möchte man, dass R eine bestimmte Variable oder auch alle Variablen vergisst. Das geht mit dem Befehl \cl{rm}:
+<<>>=
+ls()    # Was macht ls()? 
+weitereZahl = 125
+weitereZahl
+ls()
+rm(weitereZahl)
+ls()
+weitereZahl # Kann ab jetzt nicht mehr gefunden werden
+rm(list = ls())
+ls() # Was ist mit den ganzen Variablen passiert?
+@
+
+\subsubsection{Nice to know: Konstanten kann man überdecken}
+R hat ein paar Konstanten bereits eingespeichert. Man kann diese Konstanten auch mit neuen Variablenbelegungen überdecken, was schnell zu Problemen in Berechnungen führen kann. Die eigentlichen Konstanten (hier \cl{pi} und \cl{letters}) bleiben die ganze Zeit erhalten, werden aber von den neuen, gleichnamigen Variablen überdeckt. Löschen schafft Abhilfe:
+<<>>=
+rm(list =ls()) # Der Befehl löscht alle von uns gespeicherten Variablen
+ls() # Der Befehl zeigt alle gespeicherten Variablen an 
+pi  # Dann hat pi immer den gewohnten Wert
+cos(pi) # richtiges Ergebnis (cos() arbeitet in R in Bogenmaß)
+pi = 4
+pi
+cos(pi) # falsches Ergebnis, falls man cos(pi) erwartete
+letters # Buchstaben des Alphabets
+letters = ":/"
+letters
+ls() # Die neuen Variablen sind in der Liste aller Variablen gespeichert. 
+rm(list = ls()) # Wenn man sie löscht, ist alles wieder normal:
+pi
+@

@@ -1,0 +1,11 @@
+\section{Kommentare im Programmcode}
+Wenn man ein Programm schreibt, dann ist es sinnvoll, dass man sich Kommentare an jede relevante Codezeile schreibt. Diese Kommentare sollten nicht nur erklären was passiert, sondern auch weshalb. Kommentare sind sehr wichtig für den Fall, dass man selbst (oder jemand anderes) den Code später erneut verstehen möchte. Im Allgemeinen werden alle Kommentare und Variablennamen auf englisch geschrieben - auch wenn wir das in diesem Kurs nicht machen werden. \\
+
+Kommentare werden durch ein \textbf{\#} gekennzeichnet und vom Computer beim Interpretieren des Programmcodes ignoriert. Hier ein Beispiel:
+
+<<>>=
+# Hier berechne ich die Länge der Diagonale eines Rechtecks, das 
+# die Maße 3 * 4 hat: Dafür verwende ich den Satz des Pythagoras: 
+# a^ 2 + b^ 2 = c^ 2 (nach c umgestellt)
+sqrt(3^2 + 4^2)
+@

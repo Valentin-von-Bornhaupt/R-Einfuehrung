@@ -1,0 +1,169 @@
+\section{if-Verzweigungen / if-Abfragen}
+\label{sec:if-verzweigungen}
+\cl{if}-Verzweigungen gehören zu den grundlegenden Programmierkonzepten fast jeder Programmiersprache. Wie sie funktionieren, wollen wir uns einmal an folgenden Beispielen ansehen:
+
+<<>>=
+a = 5
+if(a < 10){ 
+    print("Klasse! a ist kleiner als 10.") 
+}
+@
+
+
+
+<<>>=
+# Ein Beispiel, um das Vorzeichen einer Zahl Abzufragen:
+zahl = -13
+if(zahl > 0){
+    # Die Zahl ist also positiv
+    vorzeichenDerZahl = +1
+} else if (zahl == 0) {
+    # Die Zahl ist also 0
+    vorzeichenDerZahl = 0
+} else {
+    # Es bleibt nur noch der Fall übrig, dass die Zahl negativ ist
+    vorzeichenDerZahl = -1
+}
+print(vorzeichenDerZahl) # Sollte negativ sein.
+@ 
+
+Ein weiteres Beispiel wäre das Berechnen von Nullstellen eines quadratischen Polynoms. Wollen wir die Formel
+\begin{align*}
+    f(x) =  x^2 -8x -12
+\end{align*} 
+auf Nullstellen untersuchen, dann können wir dafür die PQ-Formel 
+\begin{align*}
+    x_{1/2} = \frac{-p}{2} \, \pm \sqrt{\left (\frac{p}{2}\right )^2 -q}
+\end{align*}
+mit $p := -8$ und $q := -12$ benutzen. Aber wir müssen aufpassen: Nur, wenn es Nullstellen gibt, können wir sie auch finden:
+
+<<>>=
+p = -8
+q = -12
+
+# In der PQ-Formel ist eine Wurzel enthalten. Wenn die Zahl in der
+# Wurzel (p / 2)^2 - q positiv ist, gibt es zwei Lösungen
+if((p / 2)^2 - q > 0){ 
+    ersteNullst = -p / 2 - sqrt((p / 2)^2 - q)
+    zweiteNullst = -p / 2 + sqrt((p / 2)^2 - q)
+    print(c(ersteNullst, zweiteNullst))
+} else if ((p / 2)^2 - q == 0){ # sqrt(0) = 0 => nur eine Lösung
+    ersteNullst = -p / 2
+    print(ersteNullst)
+} else { # Wurzeln von negativen Zahlen können wir nicht ausrechnen
+    print("Es gibt keine Nullstellen")
+}
+@
+
+If-Verzweigungen sind übersichtlicher und besser lesbar, wenn man sie blockweise einrückt. Das können wir mit der ``Tab-Taste'' ( $\to$| ) machen:
+<<eval = FALSE>>=
+if(Bedingung){
+    # Anweisung, falls Bedingung wahr ist
+} else {
+    # Anweisung, die sonst ausgeführt wird.
+}
+@
+
+\begin{aufgabe}
+    Welchen Wert hat die Variable \cl{t} am Ende des folgenden Skripts?
+    <<eval = FALSE>>=
+    x = 2 
+    if(x > 2) { 
+        t = 1 
+    } else if (x > 1) { 
+        t = 2 
+    } else if (x > 0) { 
+        t = 3 
+    } 
+    print(t)
+    @
+\end{aufgabe}
+\begin{aufgabe}
+    Die R-Funktion \cl{runif(1)} liefert eine Zufallszahl zwischen 0 und 1 zurück. Schreiben Sie ein Skript, dass einer Variable \cl{x} einen zufälligen Wert zwischen 0 und 1 zuweist und dann der Variable \cl{t} den Wert 0 gibt, falls \cl{x} kleiner als 0,4 ist, und ansonsten \cl{t} auf 1 setzt.
+\end{aufgabe}
+
+% - Aufgabe: Verschachtelte if-Abfragen
+
+
+
+
+\subsection{Bedingungen in if-Verzweigungen und Wahrheitswerte}
+Die Bedingungen, die von \cl{If}-Verzweigungen überprüft werden können, müssen entweder \cl{TRUE} / \cl{T} oder \cl{FALSE} / \cl{F} sein. Die Häufigsten Bedingungen sind:
+<<eval = FALSE>>=
+A == B # Gleich
+A != B # Ungleich
+A < B # stricktes Kleiner 
+A > B # stricktes Größer 
+A <= B # Kleiner oder gleich
+A >= B # Größer oder gleich
+@
+Beispiel:
+<<>>=
+5 < 3
+8 >= 4
+4 == 4
+@
+
+\begin{bemerkung}(\cl{\textbf{=}} \textbf{vs.} \cl{\textbf{==}})\\
+Wir haben das \textit{einfache Gleichzeichen} \cl{=} in Kapitel \ref{sec:variablen} als Zuweisungsoberator kennengelernt. Das \cl{=} Zeichen bedeutete dort, dass der Befehl \cl{zahl = 5} der Variable \cl{zahl} den Wert 5 zuweist. Das \textit{doppelte Gleichzeichen} \cl{==} kann eher als \textit{Frage nach Gleichheit} verstanden werden. D.h. \cl{zahl == 5} kann man lesen als: ``Hat die Variable \cl{zahl} den Wert 5?''. R würde dann entweder mit \cl{TRUE} oder \cl{FALSE} antworten, je nachdem, ob die Gleichheit wahr oder falsch ist.
+\end{bemerkung}
+
+Man kann auch mehrere Bedingungen durch \cl{\&} (logisches UND) bzw. \cl{|} (logisches ODER) miteinander verbinden:
+<<eval = FALSE>>=
+# Logisches UND:
+Bedingung1 & Bedingung2 # Wahr, genau wenn beide Bedingungen wahr sind.
+
+# Logisches ODER:
+Bedingung1 | Bedingung2 # Wahr, außer beide Bedingungen sind falsch.
+@
+
+Beispiel:
+<<>>=
+zahl = 5
+guteLaune = TRUE
+zahl < 6 & 3 == 2 
+zahl < 6 | 3 == 2
+(zahl < 6 & 3 == 2) | guteLaune 
+@
+
+\subsection{Bedingungen auf Vektoren} \label{sec:BedAufVektoren}
+Bedingungen auf Vektoren werden elementweise überprüft:
+
+<<>>=
+vek1 = c(1, 3, 4, 8, 1)
+vek2 = c(1, 2, 4, 5, 2)
+vek1 == vek2
+vek1 > vek2
+vek1 == vek2 | vek1 > vek2
+@
+
+Man kann diese \textit{Vektoren mit Wahrheitswerten} dann dafür verwenden, um Werte aus Vektoren zu suchen:
+<<>>=
+datenPunkte = c(1, 3, 5, 7, 2, 4, 6, 9, 4, 5)
+willIchHaben = datenPunkte < 5 
+willIchHaben
+datenPunkte[ willIchHaben ]
+datenPunkte[ datenPunkte < 5 ] # Selbe Berechnung, aber in einer Zeile
+@
+
+
+
+\subsubsection{Bonus: if-Verzweiungen + Vektoren = :/} \label{sec:ifvektoren}
+Wie im Abschnitt davor gesehen, haben Vergleiche auf Vektoren einen \textit{Vektor mit Wahrheitswerten} als Ergebnis. 
+<<>>=
+xVec = -3 : 3
+xVec > 0
+@
+
+Frage: Wo ist das Problem bei folgender if-Verzweigung? Weshalb wird nicht ausgegeben, dass der Vektor eine positive Zahl enthält?
+<<>>=
+if (xVec > 0){
+    print("Mindestens ein Element in xVec ist positiv!")
+}
+@
+Auflösung: Das Problem ist, dass in einer if-Verzweigung immer ein Fall entweder eintritt \cl{TRUE} oder nicht eintritt \cl{FALSE}.
+Hat man jetzt einen Vektor von Wahrheitswerten, dann kann ein Teil des Vektors \cl{TRUE} und ein anderer Teil \cl{FALSE} sein. Das ist zu uneindeutig für R. R weiß nicht, ob \cl{if(xVec > 0)} abfragen soll, ob alle Einträge aus \cl{xVec} > 0 sein sollen, oder nur mindestens einer…
+
+\bigskip
+
+Wir lösen dieses Problem mit \cl{for}-Schleifen, die wir uns im nächsten Kapitel ansehen werden. Mit For-Schleifen können Vektoren elementweise behandelt werden.
