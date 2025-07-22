@@ -12,8 +12,8 @@ Dieses Skript ist eine Einführung in die Programmierung mit R. Es richtet sich 
 04. Variablen
 05. Vektoren
 06. Grafiken
-07. If_verzweigungen
-08. For_schleifen
+07. If-Verzweigungen
+08. For-Schleifen
 09. Funktionen
 10. Matrizen
 11. Dataframes
