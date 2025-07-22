@@ -1,6 +1,7 @@
 # Eine kurze Einführung in die Programmierung mit R
 Autoren: Valentin von Bornhaupt und Dr. Michael Welter
-![PDF-Download](https://github.com/Valentin-von-Bornhaupt/R-Einfuehrung/releases)
+
+[PDF-Download](https://github.com/Valentin-von-Bornhaupt/R-Einfuehrung/releases)
 
 Dieses Skript ist eine Einführung in die Programmierung mit R. Es richtet sich an Studierende des Biologie-Bachelors der Universität Bonn, die noch keine oder nur wenig Erfahrung mit der Programmiersprache R haben. Ziel ist es, die Grundlagen der Programmierung zu vermitteln und die Studierenden in die Lage zu versetzen, einfache Programme in R zu schreiben.
 
